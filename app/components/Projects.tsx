@@ -1,0 +1,248 @@
+"use client";
+import { useState } from "react";
+import Image from "next/image";
+import { useReveal } from "./useReveal";
+
+const PROJECTS = [
+  {
+    title: "Veste Ousadia",
+    type: "E-Commerce Platform",
+    desc: "Loja de moda moçambicana com catálogo completo, carrinho de compras e gestão de pedidos.",
+    tags: ["Design", "Frontend", "Backend"],
+    url: "https://www.vesteousadia.com",
+    img: "https://webstudio.evolurelabs.com/_next/image?url=%2Fassets%2Fousadia.png&w=640&q=75",
+    accent: "#1D9E75",
+  },
+  {
+    title: "Contela",
+    type: "Management Platform",
+    desc: "Plataforma SaaS para gestão de encomendas, stock e fornecedores — desenhada para o mercado moçambicano.",
+    tags: ["Frontend", "Backend"],
+    url: "https://inventory-eight-lemon.vercel.app/",
+    img: "https://webstudio.evolurelabs.com/_next/image?url=%2Fassets%2Fcontela.png&w=640&q=75",
+    accent: "#4a8fd4",
+  },
+  {
+    title: "Most Starred",
+    type: "Case Study",
+    desc: "Visualização interactiva dos repositórios GitHub mais populares por linguagem de programação.",
+    tags: ["Design", "Frontend"],
+    url: "#",
+    img: "https://webstudio.evolurelabs.com/_next/image?url=%2Fassets%2Frepos.png&w=640&q=75",
+    accent: "#8b7fe8",
+  },
+];
+
+export function Projects() {
+  const ref = useReveal();
+
+  return (
+    <section
+      id="projects"
+      className="ws-mob-pad"
+      style={{ padding: "7rem 3.5rem", position: "relative", zIndex: 1 }}
+    >
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <div
+          ref={ref}
+          className="ws-reveal"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+            flexWrap: "wrap",
+            gap: "1rem",
+            marginBottom: "3.5rem",
+          }}
+        >
+          <div>
+            <span className="ws-label">Projetos</span>
+            <h2 className="ws-section-title">
+              Trabalho real,
+              <br />
+              resultados reais.
+            </h2>
+          </div>
+          <a
+            href="https://github.com/ArcidesFerrao"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: "rgba(238,234,255,0.4)",
+              fontSize: ".84rem",
+              textDecoration: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: ".4rem",
+              transition: "color .2s",
+              whiteSpace: "nowrap",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "#eeeaff")}
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.color = "rgba(238,234,255,0.4)")
+            }
+          >
+            Ver no GitHub
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M3 8h10M9 4l4 4-4 4"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </a>
+        </div>
+
+        <div
+          className="ws-mob-col1"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3,1fr)",
+            gap: "1.25rem",
+          }}
+        >
+          {PROJECTS.map((p, i) => (
+            <ProjectCard key={i} p={p} delay={i * 100} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProjectCard({ p, delay }: { p: (typeof PROJECTS)[0]; delay: number }) {
+  const ref = useReveal(delay);
+  const [hov, setHov] = useState(false);
+
+  return (
+    <div
+      ref={ref}
+      className="ws-reveal"
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        background: "rgba(22,20,30,0.9)",
+        border: `1px solid ${hov ? p.accent + "45" : "rgba(255,255,255,0.07)"}`,
+        borderRadius: 14,
+        overflow: "hidden",
+        transition: "border-color .3s, transform .25s, box-shadow .25s",
+        transform: hov ? "translateY(-4px)" : "",
+        boxShadow: hov ? "0 20px 50px rgba(0,0,0,0.5)" : "none",
+      }}
+    >
+      {/* Image */}
+      <div
+        style={{
+          height: 200,
+          overflow: "hidden",
+          position: "relative",
+          background: "rgba(255,255,255,0.03)",
+        }}
+      >
+        <Image
+          src={p.img}
+          alt={p.title}
+          width={100}
+          height={100}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            transition: "transform .5s ease",
+            transform: hov ? "scale(1.05)" : "scale(1)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: hov
+              ? `linear-gradient(to top, ${p.accent}28, transparent)`
+              : "linear-gradient(to top, rgba(14,12,20,0.5), transparent)",
+            transition: "background .3s",
+          }}
+        />
+      </div>
+
+      {/* Body */}
+      <div style={{ padding: "1.6rem" }}>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: ".3rem",
+            marginBottom: ".75rem",
+          }}
+        >
+          {p.tags.map((t) => (
+            <span key={t} className="ws-tag">
+              {t}
+            </span>
+          ))}
+        </div>
+        <h3
+          style={{
+            fontFamily: "var(--font-display,'Syne',sans-serif)",
+            fontSize: "1.1rem",
+            fontWeight: 800,
+            marginBottom: ".25rem",
+            letterSpacing: "-.01em",
+          }}
+        >
+          {p.title}
+        </h3>
+        <div
+          style={{
+            color: p.accent,
+            fontSize: ".74rem",
+            fontWeight: 600,
+            marginBottom: ".6rem",
+            letterSpacing: ".03em",
+          }}
+        >
+          {p.type}
+        </div>
+        <p
+          style={{
+            color: "rgba(238,234,255,0.4)",
+            fontSize: ".82rem",
+            lineHeight: 1.68,
+            fontWeight: 300,
+            marginBottom: "1.1rem",
+          }}
+        >
+          {p.desc}
+        </p>
+        {p.url !== "#" && (
+          <a
+            href={p.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: p.accent,
+              fontSize: ".8rem",
+              fontWeight: 600,
+              textDecoration: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: ".3rem",
+            }}
+          >
+            Ver projecto
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M3 8h10M9 4l4 4-4 4"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}

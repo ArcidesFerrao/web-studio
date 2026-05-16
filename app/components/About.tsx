@@ -154,7 +154,7 @@ export function About() {
                 }}
               >
                 <Image
-                  src="https://webstudio.evolurelabs.com/_next/image?url=%2Fassets%2Fprofile.png&w=640&q=75"
+                  src="/assets/profile.png"
                   alt="Arcides Ferrao"
                   width={100}
                   height={100}

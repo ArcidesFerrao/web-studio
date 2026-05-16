@@ -10,7 +10,7 @@ const PROJECTS = [
     desc: "Loja de moda moçambicana com catálogo completo, carrinho de compras e gestão de pedidos.",
     tags: ["Design", "Frontend", "Backend"],
     url: "https://www.vesteousadia.com",
-    img: "https://webstudio.evolurelabs.com/_next/image?url=%2Fassets%2Fousadia.png&w=640&q=75",
+    img: "/assets/ousadia.png",
     accent: "#1D9E75",
   },
   {
@@ -19,7 +19,7 @@ const PROJECTS = [
     desc: "Plataforma SaaS para gestão de encomendas, stock e fornecedores — desenhada para o mercado moçambicano.",
     tags: ["Frontend", "Backend"],
     url: "https://inventory-eight-lemon.vercel.app/",
-    img: "https://webstudio.evolurelabs.com/_next/image?url=%2Fassets%2Fcontela.png&w=640&q=75",
+    img: "/assets/contela.png",
     accent: "#4a8fd4",
   },
   {
@@ -28,7 +28,7 @@ const PROJECTS = [
     desc: "Visualização interactiva dos repositórios GitHub mais populares por linguagem de programação.",
     tags: ["Design", "Frontend"],
     url: "#",
-    img: "https://webstudio.evolurelabs.com/_next/image?url=%2Fassets%2Frepos.png&w=640&q=75",
+    img: "/assets/repos.png",
     accent: "#8b7fe8",
   },
 ];

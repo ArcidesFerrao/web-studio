@@ -31,6 +31,33 @@ const PROJECTS = [
     img: "/assets/repos.png",
     accent: "#8b7fe8",
   },
+  {
+    title: "JGTS Imobiliaria",
+    type: "E-Commerce Platform",
+    desc: "Loja de moda moçambicana com catálogo completo, carrinho de compras e gestão de pedidos.",
+    tags: ["Design", "Frontend", "Backend"],
+    url: "https://www.vesteousadia.com",
+    img: "/assets/ousadia.png",
+    accent: "#1D9E75",
+  },
+  {
+    title: "MGL-Services",
+    type: "Management Platform",
+    desc: "Plataforma SaaS para gestão de encomendas, stock e fornecedores — desenhada para o mercado moçambicano.",
+    tags: ["Frontend", "Backend"],
+    url: "https://inventory-eight-lemon.vercel.app/",
+    img: "/assets/contela.png",
+    accent: "#4a8fd4",
+  },
+  {
+    title: "TheJect",
+    type: "Case Study",
+    desc: "Visualização interactiva dos repositórios GitHub mais populares por linguagem de programação.",
+    tags: ["Design", "Frontend"],
+    url: "#",
+    img: "/assets/repos.png",
+    accent: "#8b7fe8",
+  },
 ];
 
 export function Projects() {

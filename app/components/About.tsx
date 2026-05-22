@@ -13,7 +13,7 @@ const SKILLS = [
 ];
 const STATS = [
   { val: "10+", label: "Anos de experiência", color: "#1D9E75" },
-  { val: "3+", label: "Projetos entregues", color: "#4a8fd4" },
+  { val: "3+", label: "Projetos entregues por semana", color: "#4a8fd4" },
   { val: "7d", label: "Prazo médio", color: "#e89c35" },
   { val: "24h", label: "Resposta garantida", color: "#8b7fe8" },
 ];

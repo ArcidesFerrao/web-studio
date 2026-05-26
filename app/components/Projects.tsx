@@ -8,7 +8,7 @@ const PROJECTS = [
     title: "Veste Ousadia",
     type: "E-Commerce Platform",
     desc: "Loja de moda moçambicana com catálogo completo, carrinho de compras e gestão de pedidos.",
-    tags: ["Design", "Frontend", "Backend"],
+    tags: ["Frontend", "Backend"],
     url: "https://www.vesteousadia.com",
     img: "/assets/ousadia.png",
     accent: "#1D9E75",
@@ -17,8 +17,8 @@ const PROJECTS = [
     title: "Contela",
     type: "Management Platform",
     desc: "Plataforma SaaS para gestão de encomendas, stock e fornecedores — desenhada para o mercado moçambicano.",
-    tags: ["Frontend", "Backend"],
-    url: "https://inventory-eight-lemon.vercel.app/",
+    tags: ["Design", "Frontend", "Backend"],
+    url: "https://contela.evolurelabs.com",
     img: "/assets/contela.png",
     accent: "#4a8fd4",
   },
@@ -36,26 +36,26 @@ const PROJECTS = [
     type: "E-Commerce Platform",
     desc: "Loja de moda moçambicana com catálogo completo, carrinho de compras e gestão de pedidos.",
     tags: ["Design", "Frontend", "Backend"],
-    url: "https://www.vesteousadia.com",
-    img: "/assets/ousadia.png",
+    url: "https://jgtsimobiliaria.evolurelabs.com",
+    img: "/assets/jgts.png",
     accent: "#1D9E75",
   },
   {
     title: "MGL-Services",
     type: "Management Platform",
     desc: "Plataforma SaaS para gestão de encomendas, stock e fornecedores — desenhada para o mercado moçambicano.",
-    tags: ["Frontend", "Backend"],
-    url: "https://inventory-eight-lemon.vercel.app/",
-    img: "/assets/contela.png",
+    tags: ["Frontend", "Design"],
+    url: "https://mgl-services.evolurelabs.com",
+    img: "/assets/mgl.png",
     accent: "#4a8fd4",
   },
   {
-    title: "TheJect",
+    title: "EcoFinancas",
     type: "Case Study",
     desc: "Visualização interactiva dos repositórios GitHub mais populares por linguagem de programação.",
     tags: ["Design", "Frontend"],
-    url: "#",
-    img: "/assets/repos.png",
+    url: "https://ecofinancas.evolurelabs.com",
+    img: "/assets/eco.png",
     accent: "#8b7fe8",
   },
 ];
@@ -171,12 +171,12 @@ function ProjectCard({ p, delay }: { p: (typeof PROJECTS)[0]; delay: number }) {
         <Image
           src={p.img}
           alt={p.title}
-          width={100}
-          height={100}
+          width={350}
+          height={200}
           style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
+            // width: "100%",
+            // height: "100%",
+            // objectFit: "cover",
             transition: "transform .5s ease",
             transform: hov ? "scale(1.05)" : "scale(1)",
           }}

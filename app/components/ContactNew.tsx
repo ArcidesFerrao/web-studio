@@ -1,7 +1,11 @@
 "use client";
 import { useState } from "react";
 import { useReveal } from "./useReveal";
-
+declare global {
+  interface Window {
+    fbq?: (event: string, action: string) => void;
+  }
+}
 type Status = "idle" | "loading" | "success" | "error";
 
 const Arrow = () => (
@@ -16,17 +20,40 @@ const Arrow = () => (
   </svg>
 );
 
-export function Contact() {
+const WaIcon = () => (
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+  </svg>
+);
+
+// Constrói mensagem WhatsApp enriquecida a partir do formulário
+function buildWaMessage(form: {
+  name: string;
+  phone: string;
+  service: string;
+  message: string;
+}) {
+  return encodeURIComponent(
+    `Olá WebStudio! 👋\n\nVim através do site e quero falar sobre um projecto.\n\n` +
+      `👤 Nome: ${form.name}\n` +
+      `📱 Telefone: ${form.phone}\n` +
+      `🛠️ Serviço: ${form.service || "Não especificado"}\n\n` +
+      `📝 Mensagem:\n${form.message}\n\n` +
+      `Aguardo resposta. Obrigado!`,
+  );
+}
+
+const WA_NUMBER = "258852740554";
+
+export function ContactNew() {
   const ref = useReveal();
   const [status, setStatus] = useState<Status>("idle");
   const [form, setForm] = useState({
     name: "",
     phone: "",
-    email: "",
     service: "",
     message: "",
   });
-  // const [sent, setSent] = useState(false);
 
   const update =
     (k: keyof typeof form) =>
@@ -37,20 +64,8 @@ export function Contact() {
     ) =>
       setForm((p) => ({ ...p, [k]: e.target.value }));
 
-  // const submit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   const subject = encodeURIComponent(
-  //     `[Web Studio] ${form.service || "Orçamento"} — ${form.name}`,
-  //   );
-  //   const body = encodeURIComponent(
-  //     `Nome: ${form.name}\nEmail: ${form.email}\nServiço: ${form.service}\n\n${form.message}`,
-  //   );
-  //   window.open(`mailto:cidesferrao@gmail.com?subject=${subject}&body=${body}`);
-  //   setSent(true);
-  // };
-
-  const handleSubmit = async () => {
-    // if (!validate()) return;
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (typeof window !== "undefined" && window.fbq) {
       window.fbq("track", "Contact");
     }
@@ -61,14 +76,21 @@ export function Contact() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-
       if (!res.ok) throw new Error();
-
       setStatus("success");
-      // setForm(INITIAL_FORM);
     } catch {
       setStatus("error");
     }
+  };
+
+  const handleWhatsApp = () => {
+    if (typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", "Contact");
+    }
+    window.open(
+      `https://wa.me/${WA_NUMBER}?text=${buildWaMessage(form)}`,
+      "_blank",
+    );
   };
 
   return (
@@ -78,7 +100,7 @@ export function Contact() {
       style={{ padding: "7rem 3.5rem", position: "relative", zIndex: 1 }}
     >
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        {/* Top CTA banner */}
+        {/* ── Top CTA banner ── */}
         <div
           ref={ref}
           className="ws-reveal"
@@ -113,7 +135,7 @@ export function Contact() {
             style={{
               color: "rgba(238,234,255,0.42)",
               maxWidth: 440,
-              margin: "0 auto",
+              margin: "0 auto 2rem",
               fontSize: ".95rem",
               fontWeight: 300,
               lineHeight: 1.78,
@@ -121,9 +143,74 @@ export function Contact() {
           >
             Descreva o seu projecto e receba uma proposta em menos de 24 horas.
           </p>
+
+          {/* ── CTA Diagnóstico ── */}
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 12,
+              background: "rgba(29,158,117,0.08)",
+              border: "1px solid rgba(29,158,117,0.25)",
+              borderRadius: 12,
+              padding: "1rem 1.5rem",
+              maxWidth: 480,
+              width: "100%",
+              textAlign: "left",
+              cursor: "pointer",
+              transition: "border-color .2s, background .2s",
+            }}
+            onClick={() => {
+              document
+                .getElementById("quiz")
+                ?.scrollIntoView({ behavior: "smooth" });
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLDivElement).style.borderColor =
+                "rgba(29,158,117,0.5)";
+              (e.currentTarget as HTMLDivElement).style.background =
+                "rgba(29,158,117,0.13)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLDivElement).style.borderColor =
+                "rgba(29,158,117,0.25)";
+              (e.currentTarget as HTMLDivElement).style.background =
+                "rgba(29,158,117,0.08)";
+            }}
+          >
+            {/* <span style={{ fontSize: "1.6rem", flexShrink: 0 }}>🎯</span> */}
+            <div style={{ flex: 1 }}>
+              <div
+                style={{
+                  fontSize: ".72rem",
+                  color: "var(--ws-green-hi, #22c48d)",
+                  fontWeight: 700,
+                  letterSpacing: ".1em",
+                  textTransform: "uppercase",
+                  marginBottom: ".2rem",
+                }}
+              >
+                Ainda não sabe por onde começar?
+              </div>
+              <div
+                style={{
+                  fontSize: ".88rem",
+                  color: "rgba(238,234,255,0.75)",
+                  lineHeight: 1.5,
+                }}
+              >
+                Faça o{" "}
+                <strong style={{ color: "#eeeaff" }}>
+                  Diagnóstico Digital Gratuito
+                </strong>{" "}
+                — 8 perguntas, 2 minutos, resultado personalizado.
+              </div>
+            </div>
+            <Arrow />
+          </div>
         </div>
 
-        {/* Form + info */}
+        {/* ── Form + info ── */}
         <div
           className="ws-mob-col1 ws-mob-gap"
           style={{
@@ -133,7 +220,7 @@ export function Contact() {
             alignItems: "start",
           }}
         >
-          {/* Left */}
+          {/* ── Left ── */}
           <div>
             <h3
               style={{
@@ -174,10 +261,10 @@ export function Contact() {
                   href: "mailto:contacto@evolurelabs.com",
                 },
                 {
-                  className: "ic--round-whatsapp ",
+                  className: "ic--round-whatsapp",
                   label: "WhatsApp",
                   val: "+258 85 27 40 554",
-                  href: "https://wa.me/258852740554",
+                  href: `https://wa.me/${WA_NUMBER}`,
                 },
               ].map((c) => (
                 <a
@@ -205,7 +292,7 @@ export function Contact() {
                   <span
                     style={{ fontSize: "1.3rem" }}
                     className={c.className}
-                  ></span>
+                  />
                   <div>
                     <div
                       style={{
@@ -265,7 +352,7 @@ export function Contact() {
             ))}
           </div>
 
-          {/* Right — form */}
+          {/* ── Right — form ── */}
           <div
             style={{
               background: "rgba(22,20,30,0.9)",
@@ -296,8 +383,7 @@ export function Contact() {
                     lineHeight: 1.7,
                   }}
                 >
-                  O cliente de email foi aberto com a sua mensagem. Responderei
-                  em menos de 24 horas.
+                  Recebi a sua mensagem e responderei em menos de 24 horas.
                 </p>
               </div>
             ) : (
@@ -309,6 +395,7 @@ export function Contact() {
                   gap: ".95rem",
                 }}
               >
+                {/* Nome + Telefone */}
                 <div
                   className="ws-mob-col2sm"
                   style={{
@@ -318,18 +405,7 @@ export function Contact() {
                   }}
                 >
                   <div>
-                    <label
-                      style={{
-                        display: "block",
-                        fontSize: ".66rem",
-                        color: "rgba(238,234,255,0.35)",
-                        letterSpacing: ".1em",
-                        textTransform: "uppercase",
-                        marginBottom: ".38rem",
-                      }}
-                    >
-                      Nome
-                    </label>
+                    <label style={labelStyle}>Nome</label>
                     <input
                       className="ws-input"
                       value={form.name}
@@ -339,62 +415,20 @@ export function Contact() {
                     />
                   </div>
                   <div>
-                    <label
-                      style={{
-                        display: "block",
-                        fontSize: ".66rem",
-                        color: "rgba(238,234,255,0.35)",
-                        letterSpacing: ".1em",
-                        textTransform: "uppercase",
-                        marginBottom: ".38rem",
-                      }}
-                    >
-                      Numero de telefone
-                    </label>
+                    <label style={labelStyle}>Telefone</label>
                     <input
                       className="ws-input"
                       value={form.phone}
                       onChange={update("phone")}
-                      placeholder="80 123 4567"
-                      required
-                    />
-                  </div>
-                  <div className="col-span-1 md:col-span-2">
-                    <label
-                      style={{
-                        display: "block",
-                        fontSize: ".66rem",
-                        color: "rgba(238,234,255,0.35)",
-                        letterSpacing: ".1em",
-                        textTransform: "uppercase",
-                        marginBottom: ".38rem",
-                      }}
-                    >
-                      Email
-                    </label>
-                    <input
-                      className="ws-input"
-                      type="email"
-                      value={form.email}
-                      onChange={update("email")}
-                      placeholder="email@exemplo.com"
+                      placeholder="85 274 0554"
                       required
                     />
                   </div>
                 </div>
+
+                {/* Serviço */}
                 <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: ".66rem",
-                      color: "rgba(238,234,255,0.35)",
-                      letterSpacing: ".1em",
-                      textTransform: "uppercase",
-                      marginBottom: ".38rem",
-                    }}
-                  >
-                    Serviço
-                  </label>
+                  <label style={labelStyle}>Serviço</label>
                   <select
                     className="ws-input"
                     value={form.service}
@@ -404,44 +438,100 @@ export function Contact() {
                     <option>Landing Page</option>
                     <option>Site Completo</option>
                     <option>E-Commerce</option>
+                    <option>Sistema de Gestão</option>
                     <option>Solução Personalizada</option>
                   </select>
                 </div>
+
+                {/* Mensagem */}
                 <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: ".66rem",
-                      color: "rgba(238,234,255,0.35)",
-                      letterSpacing: ".1em",
-                      textTransform: "uppercase",
-                      marginBottom: ".38rem",
-                    }}
-                  >
-                    Mensagem
-                  </label>
+                  <label style={labelStyle}>Mensagem</label>
                   <textarea
                     className="ws-input"
                     rows={4}
                     value={form.message}
                     onChange={update("message")}
-                    placeholder="Descreva o seu projecto e o que precisa..."
+                    placeholder="Descreva o seu projecto..."
                     style={{ resize: "vertical" }}
                     required
                   />
                 </div>
-                <button
-                  type="submit"
-                  className="ws-btn"
+
+                {/* Botões */}
+                <div
                   style={{
-                    justifyContent: "center",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: ".6rem",
                     marginTop: ".2rem",
-                    fontSize: ".95rem",
-                    padding: ".9rem",
                   }}
                 >
-                  Enviar Pedido <Arrow />
-                </button>
+                  {/* Enviar por email/API */}
+                  <button
+                    type="submit"
+                    className="ws-btn"
+                    disabled={status === "loading"}
+                    style={{
+                      justifyContent: "center",
+                      fontSize: ".95rem",
+                      padding: ".9rem",
+                    }}
+                  >
+                    {status === "loading" ? "A enviar..." : "Enviar Pedido"}
+                    {status !== "loading" && <Arrow />}
+                  </button>
+
+                  {/* ── WhatsApp enriquecido ── */}
+                  <button
+                    type="button"
+                    onClick={handleWhatsApp}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 8,
+                      width: "100%",
+                      padding: ".85rem",
+                      background: "rgba(29,158,117,0.1)",
+                      border: "1px solid rgba(29,158,117,0.3)",
+                      borderRadius: 10,
+                      color: "var(--ws-green-hi, #22c48d)",
+                      fontSize: ".88rem",
+                      fontWeight: 600,
+                      fontFamily: "inherit",
+                      cursor: "pointer",
+                      transition: "background .2s, border-color .2s",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.background =
+                        "rgba(29,158,117,0.18)";
+                      (e.currentTarget as HTMLButtonElement).style.borderColor =
+                        "rgba(29,158,117,0.55)";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.background =
+                        "rgba(29,158,117,0.1)";
+                      (e.currentTarget as HTMLButtonElement).style.borderColor =
+                        "rgba(29,158,117,0.3)";
+                    }}
+                  >
+                    <WaIcon />
+                    Continuar pelo WhatsApp
+                  </button>
+                </div>
+
+                {/* Error state */}
+                {status === "error" && (
+                  <p
+                    style={{
+                      fontSize: ".8rem",
+                      color: "#f87171",
+                      textAlign: "center",
+                    }}
+                  >
+                    Algo correu mal. Tente pelo WhatsApp abaixo.
+                  </p>
+                )}
               </form>
             )}
           </div>
@@ -450,3 +540,13 @@ export function Contact() {
     </section>
   );
 }
+
+// ── Shared label style ────────────────────────────────────────────────────────
+const labelStyle: React.CSSProperties = {
+  display: "block",
+  fontSize: ".66rem",
+  color: "rgba(238,234,255,0.35)",
+  letterSpacing: ".1em",
+  textTransform: "uppercase",
+  marginBottom: ".38rem",
+};

@@ -4,18 +4,27 @@ import Image from "next/image";
 import { useReveal } from "./useReveal";
 
 const PROJECTS = [
+  // {
+  //   title: "Veste Ousadia",
+  //   type: "E-Commerce",
+  //   desc: "Loja de moda moçambicana com catálogo completo, carrinho de compras e gestão de pedidos.",
+  //   tags: ["Frontend", "Backend"],
+  //   url: "https://www.vesteousadia.com",
+  //   img: "/assets/ousadia.png",
+  //   accent: "#1D9E75",
+  // },
   {
-    title: "Veste Ousadia",
-    type: "E-Commerce Platform",
-    desc: "Loja de moda moçambicana com catálogo completo, carrinho de compras e gestão de pedidos.",
+    title: "Djopa",
+    type: "Job Seeking Platform",
+    desc: "Plataforma de emprego focada no mercado moçambicano, conectando candidatos a oportunidades locais e internacionais.",
     tags: ["Frontend", "Backend"],
-    url: "https://www.vesteousadia.com",
-    img: "/assets/ousadia.png",
+    url: "#",
+    img: "/assets/djopa.png",
     accent: "#1D9E75",
   },
   {
     title: "Contela",
-    type: "Management Platform",
+    type: "Sistema de Gestão",
     desc: "Plataforma SaaS para gestão de encomendas, stock e fornecedores — desenhada para o mercado moçambicano.",
     tags: ["Design", "Frontend", "Backend"],
     url: "https://contela.evolurelabs.com",
@@ -24,7 +33,7 @@ const PROJECTS = [
   },
   {
     title: "Most Starred",
-    type: "Case Study",
+    type: "Estudo de Caso",
     desc: "Visualização interactiva dos repositórios GitHub mais populares por linguagem de programação.",
     tags: ["Design", "Frontend"],
     url: "#",
@@ -162,7 +171,7 @@ function ProjectCard({ p, delay }: { p: (typeof PROJECTS)[0]; delay: number }) {
       {/* Image */}
       <div
         style={{
-          height: 200,
+          // height: 120,
           overflow: "hidden",
           position: "relative",
           background: "rgba(255,255,255,0.03)",
@@ -174,9 +183,9 @@ function ProjectCard({ p, delay }: { p: (typeof PROJECTS)[0]; delay: number }) {
           width={350}
           height={200}
           style={{
-            // width: "100%",
+            width: "100%",
             // height: "100%",
-            // objectFit: "cover",
+            objectFit: "cover",
             transition: "transform .5s ease",
             transform: hov ? "scale(1.05)" : "scale(1)",
           }}

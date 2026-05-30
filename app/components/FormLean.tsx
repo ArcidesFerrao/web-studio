@@ -383,7 +383,7 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
         <div
           style={{
             textAlign: "center",
-            marginBottom: 24,
+            // marginBottom: 24,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -408,7 +408,13 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
           </p>
         </div>
         <div
-          style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1.5rem",
+            justifyContent: "end",
+            alignSelf: "end",
+          }}
         >
           <div
             style={{
@@ -459,18 +465,19 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
               </div>
             ))}
           </div>
-
-          <BtnPrimary onClick={onStart}>Iniciar Diagnóstico →</BtnPrimary>
-          <p
-            style={{
-              textAlign: "center",
-              fontSize: "0.7rem",
-              color: "var(--ws-muted)",
-              marginTop: 14,
-            }}
-          >
-            Mais de 50 negócios em Maputo já diagnosticados
-          </p>
+          <div>
+            <BtnPrimary onClick={onStart}>Iniciar Diagnóstico →</BtnPrimary>
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: "0.7rem",
+                color: "var(--ws-muted)",
+                marginTop: 14,
+              }}
+            >
+              Mais de 50 negócios em Maputo já diagnosticados
+            </p>
+          </div>
         </div>
       </div>
     </div>
